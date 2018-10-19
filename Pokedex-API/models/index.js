@@ -34,4 +34,10 @@ Object.keys(db).forEach(modelName => {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
+db.Pokemons = require('../models/pokemons')(sequelize, Sequelize);
+db.Types = require('../models/types')(sequelize, Sequelize);
+
+db.Pokemons.belongsToMany(db.Types, {through: 'pokemons_types'});
+db.Types.belongsToMany(db.Pokemons, {through: 'pokemons_types'});
+
 module.exports = db;
