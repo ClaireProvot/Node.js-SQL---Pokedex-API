@@ -1,8 +1,8 @@
 // Package dependencies
-import express from 'express';
-import bodyParser from 'body-parser';
-import db from './models';
-import router from './routes/router';
+const express = require('express');
+const bodyParser = require('body-parser');
+const db = require('./models');
+const router = require('./routes/router');
 
 // Express
 const app = express();
@@ -11,17 +11,26 @@ const app = express();
 const PORT = process.env.port || 3000;
 
 // Sets up the Express app to handle data parsing
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended : false}));
 app.use(bodyParser.json());
 app.use(bodyParser.text());
-app.use(bodyParser.json({type: 'application/vnd.api+json'}));
+
 
 // Run the routes
 router(app, db);
 
-// Starts the server to begin listening
-db.sequelize.sync().then(function () {
-      app.listen(PORT, function() {
-            console.log(`Listening on PORT ${PORT}`);
-      });
+// Synchronize database with the previously declared models
+db.sequelize.sync({
+  alter: false
+}).then((db) => {
+  console.log('Database connected');
+}).catch(err => {
+  console.log('Error connecting database:', err);
 });
+    
+// Start listening to external http requests
+app.listen(PORT, () => {
+  console.log(`Server started on port ${PORT}`);
+});
+
+module.exports = app;
