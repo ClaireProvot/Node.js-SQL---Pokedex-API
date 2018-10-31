@@ -1,6 +1,7 @@
 # Pokedex-API
 
-This is a simple and basic CRUD application (Create, Read, Update, Delete) using Node.js, Express, Sequelize and MySQL as database.
+A mini-encyclopedia of Pokemon species, types, evolutions, etc ...
+This is a simple and basic CRUD application using Node.js, Express, Sequelize and MySQL as database.
 
 ## Table of Contents
 
