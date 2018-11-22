@@ -1,0 +1,152 @@
+const chai = require('chai');
+const assert = chai.assert;
+
+describe('Claire Package', () => {
+    it('wip should return "pokemons" when no parameters', (done) => {
+        request(app)
+        .get('/pokemons')
+        .set('Accept', 'application/json')
+        .expect(200)
+        .end((err, res) => {
+            console.log("err:", err);
+            console.log("res:", res);
+
+            done();
+        });
+    });
+});
+
+/*
+ 1/ initialization
+ 2/ execution
+ 3/ check
+*/
+
+const claire = (user) => {
+    if (typeof user != "object" || user == null || isNaN(user.age)) {
+        return "invalid user";
+    }
+
+    if (user.name == "Ilyess") {
+        return "Not for you...";
+    }
+
+    let age = user.age;
+    if (age > 100) {
+        return "Liar!";
+    } else if (age > 70) {
+        return "Too old... Bye";
+    } else if (age > 40) {
+        return "Welcome to the crew";
+    } else if (age > 18) {
+        return "Ooo yeah baby";
+    } else if (age > 0) {
+        return "Too young...";
+    } else {
+        return "Liar!";
+    }
+};
+
+let user;
+
+describe('Claire Package', () => {
+    describe('Claire function', () => {
+
+        beforeEach((done) => {
+            user = {
+                age: 18,
+                name: "Claire",
+            };
+
+            done();
+        });
+
+        it('should return "Liar!" when the value is 109', (done) => {
+            /* Initialization */
+            user.age = 109;
+
+            /* Execution */
+            let res = claire(user);
+
+            /* Check */
+            assert.equal(res, "Liar!");
+
+            done();
+        });
+
+        it('should return "Ooo yeah baby" when the value is 19', () => {
+            /* Initialization */
+            user = {
+                age: 19,
+            };
+
+            /* Execution */
+            let res = claire(user);
+
+            /* Check */
+            assert.isNotNull(res);
+            assert.equal(res, "Ooo yeah baby");
+        });
+
+        it('should return "invalid user" when the value is undefined', () => {
+            /* Initialization */
+            user = undefined;
+
+            /* Execution */
+            let res = claire(user);
+
+            /* Check */
+            assert.isNotNull(res);
+            assert.equal(res, "invalid user");
+        });
+
+        it('should return "invalid user" when the value is null', () => {
+            /* Initialization */
+            user = null;
+
+            /* Execution */
+            let res = claire(user);
+
+            /* Check */
+            assert.isNotNull(res);
+            assert.equal(res, "invalid user");
+        });
+
+        it('should return "invalid user" when the value is empty object', () => {
+            /* Initialization */
+            user = {};
+
+            /* Execution */
+            let res = claire(user);
+
+            /* Check */
+            assert.isNotNull(res);
+            assert.equal(res, "invalid user");
+        });
+
+        it('should return "invalid user" when the value is user with invalid age', () => {
+            /* Initialization */
+            user.age = "claire";
+
+            /* Execution */
+            let res = claire(user);
+
+            /* Check */
+            assert.isNotNull(res);
+            assert.equal(res, "invalid user");
+        });
+
+        it('should return "Not for you..." when the value is user with ilyess name', () => {
+            /* Initialization */
+            user.name = "Ilyess";
+
+            /* Execution */
+            let res = claire(user);
+
+            /* Check */
+            assert.isNotNull(res);
+            assert.equal(res, "Not for you...");
+        });
+
+    });
+});
