@@ -1,4 +1,4 @@
-# Pokedex-API
+# Pokedex-API-SQL
 
 A mini-encyclopedia of Pokemon species, types, evolutions, etc ...
 This is a simple and basic CRUD application using Node.js, Express, Sequelize and MySQL as database.
@@ -12,7 +12,7 @@ This is a simple and basic CRUD application using Node.js, Express, Sequelize an
 
 ## Requirement
 
-Pokedex-API requires the following to run:
+Pokedex-API-SQL requires the following to run:
 
 - Node.js 8.10+
 - npm 5.6+ (normally comes with Node.js)
@@ -22,7 +22,7 @@ Pokedex-API requires the following to run:
 
 Running on local machine
 ```
-git clone https://github.com/ClaireProvot/Pokedex-API
+git clone https://github.com/ClaireProvot/Pokedex-API-SQL
 cd Pokedex-API
 npm install
 npm start
