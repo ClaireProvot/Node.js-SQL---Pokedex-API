@@ -41,10 +41,10 @@ Now your API is ready to be used !
 
 ### Get a pokemon
 
-Use the endpoint **/pokemon/:id** to return data about a specific pokemon by the `id`.
+Use the endpoint **/pokemon/** to return data about a specific pokemon by the `id`.
 
 #### Example 
- *localhost:3000/pokemons/1*
+ *localhost:3000/pokemons?id=001*
 
 ```{
     "id": 1,
@@ -102,7 +102,7 @@ Use the endpoint **/pokemons** to return data about all pokemons.
 Or filter the results with query string : id, name, or one of the 2 types of the pokemon. 
 
 #### Example 
- *localhost:3000/pokemons?id=2&name=Bulbasaur&type=Poison*
+ *localhost:3000/pokemons?type=Poison*
 
  If you want you can configure its offset ( not limit ).
 
