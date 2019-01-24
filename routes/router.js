@@ -5,7 +5,6 @@ const Op = Sequelize.Op;
 module.exports = (app, db) => {
 	//CRUD
 	app.get('/allpokemons', (req, res, next) => {
-		console.log('all pokemons display from id:', req.query.offset + 1);
 		// Get all the pokemons  with offset query and limit : 50
 		db.Pokemons.findAndCountAll({
 			include: [{
@@ -17,6 +16,7 @@ module.exports = (app, db) => {
 			// if offset < nb pokemons, ok. Else error 404
 			if (result.count >= parseInt(req.query.offset) || req.query.offset == undefined) {
 				res.status(200).json(result.rows);
+				console.log('all pokemons display from id:', res.body[0].id_pokemon);
 			} else {
 				res.status(404).send('Not Found');
 			};
@@ -28,9 +28,9 @@ module.exports = (app, db) => {
 	});
 
 	app.get('/pokemons', (req, res) => {
-		console.log('Type required is:', req.query.type);
+		console.log('Type required is:', req.query.type, typeof req.query.type);
 		// Get all the pokemons by type and limit : 50
-		if (req.query.type.split(" ").length === 1) {
+		if (req.query.type) {
 			db.Pokemons.findAndCountAll({
 				// Include JOIN in result
 				include: [{
@@ -42,45 +42,37 @@ module.exports = (app, db) => {
 				}],
 				limit: 50,
 			}).then(result => {
-				if (result.count != 0) {
-					console.log('Pokemons found', result.count);
 					res.status(200).json(result.rows);
-				} else {
-					res.status(404).send('Not Found');
-				}
+			}).catch(err => {
+				res.status(500).send({
+					error: err
+				})
 			})
 		} else {
-			res.status(404).send('Not Found, only one type accepted');
-		};
+			console.log('Name required is:', req.query.name, typeof req.query.type);
+			console.log('Id required is:', req.query.id, typeof req.query.id);
+			if (req.query.name || req.query.id ) {
+				db.Pokemons.findOne({
+					include: [{
+						all: true
+					}],
+					where: {
+						[Op.or]: {
+						ename: req.query.name,
+						id_pokemon: req.query.id,
+						}
+					}
+				}).then(result => {
+					res.status(200).json(result);
+				}).catch(err => {
+					res.status(404).send({
+						error: err
+					})
+				})
+			}
+		}
 	});
 
-	app.get('/pokemons/:id', (req, res) => {
-		// Get a 'pokemon' by id
-		db.Pokemons.findOne({
-			include: [{
-				all: true
-			}],
-			where: {
-				id: req.params.id,
-			}
-		}).then(result => {
-			res.status(200).json(result);
-		});
-	});
-
-	app.get('/pokemons/:name', (req, res) => {
-		// Get a 'pokemon' by name
-		db.Pokemons.findOne({
-			include: [{
-				all: true
-			}],
-			where: {
-				ename: req.params.name,
-			}
-		}).then(result => {
-			res.status(200).json(result);
-		});
-	});
 
 	app.put('/pokemons/:id', (req, res) => {
 		// Update a 'pokemon'
@@ -163,20 +155,32 @@ module.exports = (app, db) => {
 					id_pokemon: req.params.id,
 				}
 			});
-		}).then(result => {
-			res.status(201).json(result);
-		});
+		}).then((result) => {
+			return res.status(201).json(result);
+		}).catch((err) => {
+			return res.status(500).send(err);
+		})
 	});
 
 
 	app.delete('/pokemons/:id', (req, res) => {
 		// Delete a pokemon
-		db.Pokemons.destroy({
+		db.Pokemons.findOne({
 			where: {
-				id: req.params.id,
+				id_pokemon: req.params.id,
 			}
-		}).then(result => {
-			res.json({});
-		});
+		}).then((p) => {
+			console.log(p);
+			return db.Pokemons.destroy({
+				where: {
+					id_pokemon: p.id,
+				}
+			})
+		}).then((result) => {
+			console.log(result);
+			return res.status(200).json(result);
+		}).catch((err) => {
+			return res.status(404).send(err);
+		})
 	});
 };

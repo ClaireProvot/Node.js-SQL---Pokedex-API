@@ -1,7 +1,7 @@
 // Import dependancies
-let PokemonsJson = require('../Pokedex-assignment/data/pokedex.json');
-let TypesJson = require('../Pokedex-assignment/data/types.json');
-let db = require('../Pokedex-API/models/index');
+let PokemonsJson = require('../Pokedex-API-SQL/Pokedex-assignment/data/pokedex.json');
+let TypesJson = require('../Pokedex-API-SQL/Pokedex-assignment/data/types.json');
+let db = require('../Pokedex-API-SQL/models/index');
 
 // Populate DB SQL from JSON Pokedex data (all in once)
 const populateDB = () => {
